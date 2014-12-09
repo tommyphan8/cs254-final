@@ -136,7 +136,7 @@ const void ParseList::printParse()
 					if (current->data.getDataInt() > 0)
 					{
 						
-						retrieveAddressFields(current, outFile, numOfRows);
+						retrieveAddressFields(current, outFile, numOfRows, 0);
 						
 					}
 					else
@@ -153,7 +153,7 @@ const void ParseList::printParse()
 					//cout << "Line " << current->data.getLineNum() << ": " << "Read S-to-D command: " << current->data.getDataInt() / 2 << " words" << endl;
 					if (current->data.getDataInt() > 0)
 					{
-						retrieveAddressFields(current, outFile, numOfRows);
+						retrieveAddressFields(current, outFile, numOfRows, 0);
 					}
 					else
 					{
@@ -173,7 +173,7 @@ const void ParseList::printParse()
 					if (current->data.getDataInt() > 0)
 					{
 												
-						retrieveAddressFields(current, outFile, numOfRows);
+						retrieveAddressFields(current, outFile, numOfRows, 1);
 					}
 					else
 					{
@@ -190,7 +190,7 @@ const void ParseList::printParse()
 					if (current->data.getDataInt() > 0)
 					{
 						
-						retrieveAddressFields(current, outFile, numOfRows);
+						retrieveAddressFields(current, outFile, numOfRows, 1);
 					}
 					else
 					{
@@ -292,48 +292,98 @@ const void ParseList::retrieveAddressFields(Node *current, ofstream & outFile, i
 	int wordPos = 0;
 	word tempWord;
 	ParseField  tempField;
-	if (!forward)// reverse 5-4-3-2-1
+		if (wordOrdering == 1)
 	{
-		tempField.setForward(false);
-		wordPos = numWords - 1;
-		for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+		if (!forward)// reverse 5-4-3-2-1
 		{
-			tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
-			tempField.insert(tempWord);
-			//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(0, 4) << endl; //it->substr(0,4)
-			wordPos--;
+			tempField.setForward(true);
+			wordPos = 0;
+			for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+			{
 
-			tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
-			tempField.insert(tempWord);
-			//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(4, 7) << endl;
-			wordPos--;
+				tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				wordPos++;
 
+				tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				wordPos++;
+
+			}
+			//tempField.print();
+			tempField.printParse(outFile, 1); //1 means high to low
+			outFile << endl;
+			//cout << endl;
 		}
-		//tempField.print();
-		tempField.printParse(outFile);
-		outFile << endl;
-		//cout << endl;
-	}
-	else //forward 0-1-2-3-4-5 memory address
-	{
-		tempField.setForward(true); 
-		wordPos = 0;
-		for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+		else //forward 0-1-2-3-4-5 memory address
 		{
+			tempField.setForward(false);
+			wordPos = numWords - 1;
+			for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+			{
+				tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(0, 4) << endl; //it->substr(0,4)
+				wordPos--;
 
-			tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
-			tempField.insert(tempWord);
-			wordPos++;
+				tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(4, 7) << endl;
+				wordPos--;
+
+			}
+			//tempField.print();
+			tempField.printParse(outFile, 1);
+			outFile << endl;
+			//cout << endl;
+		}
 			
-			tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
-			tempField.insert(tempWord);
-			wordPos++;
+	}
+	else
+	{
+		if (!forward)// reverse 5-4-3-2-1
+		{
+			tempField.setForward(false);
+			wordPos = numWords - 1;
+			for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+			{
+				tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(0, 4) << endl; //it->substr(0,4)
+				wordPos--;
 
+				tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				//cout << "Line " << it->getLineNum() << ": Word " << wordPos << " :" << it->getData().substr(4, 7) << endl;
+				wordPos--;
+
+			}
+			//tempField.print();
+			tempField.printParse(outFile, 0); //0 means low-to-high
+			outFile << endl;
+			//cout << endl;
 		}
-		//tempField.print();
-		tempField.printParse(outFile);
-		outFile << endl;
-		//cout << endl;
+		else //forward 0-1-2-3-4-5 memory address
+		{
+			tempField.setForward(true);
+			wordPos = 0;
+			for (list<ParseData>::iterator it = temp.begin(); it != temp.end(); it++)
+			{
+
+				tempWord.setAll(it->getData().substr(0, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				wordPos++;
+
+				tempWord.setAll(it->getData().substr(4, 4), wordPos, it->getLineNum());
+				tempField.insert(tempWord);
+				wordPos++;
+
+			}
+			//tempField.print();
+			tempField.printParse(outFile, 0);
+			outFile << endl;
+			//cout << endl;
+		}
 	}
 	//testing purposes
 	

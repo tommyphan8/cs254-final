@@ -34,7 +34,7 @@ public:
 	
 	const int getCount();
 
-	const void retrieveAddressFields(Node *current, ofstream &, int numOfRows);
+	const void retrieveAddressFields(Node *current, ofstream &, int numOfRows, int);
 	const void retrieveTime(Node *current, int numOfRows, int i);
 
 	~ParseList();

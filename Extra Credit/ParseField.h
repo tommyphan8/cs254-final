@@ -24,7 +24,7 @@ public:
 	void setForward(bool);
 
 	const void print();
-	const void printParse(ofstream & outFile);
+	const void printParse(ofstream & outFile, int);
 
 private:
 	int count;
