@@ -202,13 +202,14 @@ const void ParseList::printParse()
 			}
 			current = current->next;
 		}
-		outFile.close();
-		std::cout << std::setprecision(2) << fixed;
+		
+		outFile << std::setprecision(2) << fixed;
 		outFile << endl;
 		outFile << "Read S-to-D: " << (sizeOfCommands2 * 32 * 1e-6) / totalTime2 << " Megabits/sec" << endl;
 		outFile << "Write S-to-D: " << (sizeOfCommands0 * 32 * 1e-6) / totalTime0 << " Megabits/sec" << endl;
 		outFile << "Write D-to-S: " << (sizeOfCommands1 * 32 * 1e-6) / totalTime1 << " Megabits/sec" << endl;
 		outFile << "Read D-to-S: " << (sizeOfCommands3 * 32 * 1e-6) / totalTime3 << " Megabits/sec" << endl;
+		outFile.close();
 		
 	}
 }
