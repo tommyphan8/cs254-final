@@ -56,7 +56,7 @@ const void ParseField::print()
 	}
 }
 
-const void ParseField::printParse(ofstream & outFile)
+const void ParseField::printParse(ofstream & outFile, int order)
 {
 	Node1 *current;
 	current = head;
