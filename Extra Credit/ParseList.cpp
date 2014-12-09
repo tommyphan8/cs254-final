@@ -266,7 +266,7 @@ const void ParseList::retrieveTime(Node *current, int numOfRows, int type)
 }
 
 
-const void ParseList::retrieveAddressFields(Node *current, ofstream & outFile, int numOfRows)
+const void ParseList::retrieveAddressFields(Node *current, ofstream & outFile, int numOfRows, int wordOrdering)
 {
 	list<ParseData> temp;
 	bool forward = false;
@@ -291,8 +291,8 @@ const void ParseList::retrieveAddressFields(Node *current, ofstream & outFile, i
 
 	int wordPos = 0;
 	word tempWord;
-	ParseField  tempField;
-		if (wordOrdering == 1)
+	ParseField tempField;
+	if (wordOrdering == 1)
 	{
 		if (!forward)// reverse 5-4-3-2-1
 		{
