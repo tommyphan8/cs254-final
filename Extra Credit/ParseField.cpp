@@ -185,7 +185,7 @@ const void ParseField::printParse(ofstream & outFile, int order)
 
 						//cout << "Line " << currentLineNum << ": Word " << currentWordNum << ": Rec_Raw = " << extractInt << " (disable)" << endl;
 					}
-					else if (extractInt == 5)
+					else if (extractInt == 1)
 					{
 						outFile << "Line " << currentLineNum << ": Word " << currentWordNum << ": Rec_Raw = " << extractInt << " (enable)" << endl;
 
@@ -331,7 +331,7 @@ const void ParseField::printParse(ofstream & outFile, int order)
 
 						//cout << "Line " << currentLineNum << ": Word " << currentWordNum << ": Rec_Raw = " << extractInt << " (disable)" << endl;
 					}
-					else if (extractInt == 5)
+					else if (extractInt == 1)
 					{
 						outFile << "Line " << currentLineNum << ": Word " << currentWordNum << ": Rec_Raw = " << extractInt << " (enable)" << endl;
 
